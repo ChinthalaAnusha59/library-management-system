@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Viewers</title>
+
+    <style>
+         body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+
+        /* 📚 Library Background Image */
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                    url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da');
+
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+
+        color: rgb(243, 235, 235);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .container {
+        background: rgba(248, 246, 246, 0.95);
+        padding: 20px;
+        border-radius: 10px;
+        color: rgb(247, 244, 244);
+    }
+    .page-content{
+    padding-top:70px;
+    }
+
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    color: black;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    text-align: center;
+}
+
+th {
+    background: #1e293b;
+    color: white;
+    font-size: 16px;
+}
+
+td {
+    background: #f8fafc;
+    color: #111827;
+}
+
+tr:nth-child(even) td {
+    background: #e2e8f0;
+}
+
+tr:hover td {
+    background: #cbd5e1;
+    transition: 0.3s;
+}
+    </style>
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+
+    <h1 class="animated-heading">📚 Viewers List</h1>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>ID</th>
+            <th>Department</th>
+            <th>Phone</th>
+            <th>Book</th>
+            <th>Action</th>
+        </tr>
+
+        {% for viewer in viewers %}
+        <tr>
+            <td>{{ viewer.candidate_name }}</td>
+            <td>{{ viewer.candidate_id }}</td>
+            <td>{{ viewer.department }}</td>
+            <td>{{ viewer.phone }}</td>
+            <td>{{ viewer.borrowed_book }}</td>
+            <td>
+                <a href="{{ url_for('delete_viewer', id=viewer.id) }}"
+                   onclick="return confirm('Delete this viewer?')">
+                   Delete
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <button onclick="window.location.href='{{ url_for('add_viewers') }}'">
+        + Add Viewer
+    </button>
+
+</body>
+</html>

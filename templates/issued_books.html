@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Issued Books</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                        url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        .container {
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            border-radius: 12px;
+            color: black;
+        }
+
+        .top-form {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .top-form form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        select,
+        input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            min-width: 180px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-btn {
+            background: #0f172a;
+            color: white;
+        }
+
+        .edit-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        #search {
+            width: 50%;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background: #0f172a;
+            color: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        tr:hover {
+            background: #f1f5f9;
+        }
+
+        .flash-message {
+            background: green;
+            color: white;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+{% include 'navbar.html' %}
+
+<h1>📚 Issued Books</h1>
+
+<div class="container">
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash-message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- SEARCH -->
+    <input type="text"
+           id="search"
+           placeholder="Search Candidate or Book..."
+           onkeyup="searchTable()">
+
+    <!-- ISSUE BOOK + ADD MEMBER -->
+    <div class="top-form">
+
+        <!-- ISSUE BOOK -->
+        <form method="POST" action="/add_issue">
+
+   <div style="display:flex; align-items:center; gap:5px;">
+
+    <div style="display:flex; align-items:center; gap:10px;">
+
+    <select name="candidate_name"
+            id="candidateSelect"
+            required
+            onchange="showDeleteButton()">
+
+        <option value="">Select Candidate</option>
+
+        {% for candidate in candidates %}
+        <option value="{{ candidate.name }}" data-id="{{ candidate.id }}">
+            {{ candidate.name }}
+        </option>
+        {% endfor %}
+
+    </select>
+
+            {% if session.get('role') == 'admin' %}
+            <button type="button"
+                    id="deleteCandidateBtn"
+                    class="delete-btn"
+                    style="display:none;"
+                    onclick="deleteSelectedCandidate()">
+                Delete
+            </button>
+            {% endif %}
+
+        </div>
+
+
+            <input type="text"
+                   name="book_title"
+                   placeholder="Book Title"
+                   list="book_list"
+                   autocomplete="off"
+                   required>
+
+            <button class="add-btn">
+                Issue Book
+            </button>
+
+        </form>
+
+        <!-- ADD MEMBER -->
+        <form method="POST" action="/add_candidate">
+
+            <input type="text"
+                   name="candidate_name"
+                   placeholder="New Candidate Name"
+                   required>
+
+            <button class="add-btn">
+                Add Candidate
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- BOOK LIST -->
+    <datalist id="book_list">
+
+        {% for book in books %}
+            <option value="{{ book.title }}">
+        {% endfor %}
+
+        {% for book in admin_books %}
+            <option value="{{ book.title }}">
+        {% endfor %}
+
+    </datalist>
+
+    <!-- TABLE -->
+    <table id="bookTable">
+
+        <tr>
+            <th>Candidate</th>
+            <th>Book</th>
+            <th>Date Issued</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for issue in issued_books %}
+        <tr>
+
+            <form method="POST"
+                  action="{{ url_for('edit_issue', id=issue.id) }}">
+
+                <td class="view{{ issue.id }}">
+                    {{ issue.candidate_name }}
+                </td>
+
+                <td class="edit{{ issue.id }}"
+                    style="display:none;">
+                    <input type="text"
+                           name="candidate_name"
+                           value="{{ issue.candidate_name }}">
+                </td>
+
+                <td class="view{{ issue.id }}">
+                    {{ issue.book_title }}
+                </td>
+
+                <td class="edit{{ issue.id }}"
+                    style="display:none;">
+                    <input type="text"
+                           name="book_title"
+                           value="{{ issue.book_title }}">
+                </td>
+
+                <td>
+                    {{ issue.date_issued.strftime('%d-%m-%Y %H:%M') }}
+                </td>
+
+                <td>
+
+                    <button type="button"
+                            onclick="enableEdit({{ issue.id }})"
+                            class="edit-btn">
+                        Edit
+                    </button>
+
+                    <button type="submit"
+                            class="edit{{ issue.id }}"
+                            style="display:none;">
+                        Update
+                    </button>
+
+                    <button type="button"
+                            onclick="cancelEdit({{ issue.id }})"
+                            class="edit{{ issue.id }}"
+                            style="display:none;">
+                        Cancel
+                    </button>
+
+                    <a href="{{ url_for('delete_issue', id=issue.id) }}"
+                       onclick="return confirm('Delete this record?')">
+
+                        <button type="button"
+                                class="delete-btn">
+                            Delete
+                        </button>
+
+                    </a>
+
+                </td>
+
+            </form>
+
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</div>
+
+<script>
+
+function searchTable() {
+
+    let input =
+        document.getElementById("search")
+        .value.toLowerCase();
+
+    let rows =
+        document.querySelectorAll("#bookTable tr");
+
+    rows.forEach((row,index)=>{
+
+        if(index===0) return;
+
+        let text =
+            row.innerText.toLowerCase();
+
+        row.style.display =
+            text.includes(input) ? "" : "none";
+
+    });
+}
+
+function enableEdit(id){
+
+    document
+    .querySelectorAll('.view'+id)
+    .forEach(el=>el.style.display='none');
+
+    document
+    .querySelectorAll('.edit'+id)
+    .forEach(el=>el.style.display='');
+}
+
+function cancelEdit(id){
+
+    document
+    .querySelectorAll('.view'+id)
+    .forEach(el=>el.style.display='');
+
+    document
+    .querySelectorAll('.edit'+id)
+    .forEach(el=>el.style.display='none');
+}
+function showDeleteButton(){
+
+    let select = document.getElementById("candidateSelect");
+    let button = document.getElementById("deleteCandidateBtn");
+
+    if(select.value != ""){
+        button.style.display = "inline-block";
+    }else{
+        button.style.display = "none";
+    }
+
+}
+
+function deleteSelectedCandidate(){
+
+    let select = document.getElementById("candidateSelect");
+    let id = select.options[select.selectedIndex].getAttribute("data-id");
+
+    if(confirm("Delete this candidate?")){
+        window.location.href = "/delete_candidate/" + id;
+    }
+
+}
+
+</script>
+
+</body>
+</html>

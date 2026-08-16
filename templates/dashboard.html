@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: url('https://i.pinimg.com/736x/40/5e/c1/405ec13d579af33ed54239055e909764.jpg') no-repeat center center/cover;
+            height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Dark overlay */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Container */
+        .container {
+            display: flex;
+            width: 90%;
+            height: 90vh;
+
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0px 5px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background: #0f172a;
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 12px;
+            text-decoration: none;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .sidebar a:hover {
+            background: #1e293b;
+        }
+
+        /* Main */
+        .main {
+            flex: 2;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        /* Top bar */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-box input {
+            padding: 10px;
+            width: 250px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        /* Cards */
+        .stats-container{
+        width:100%;
+        margin-top:5px;
+        }
+
+        .stats-row{
+            display:flex;
+            gap:20px;
+            margin-bottom:8px;
+        }
+
+        .card{
+            flex:1;
+            background:rgba(255,255,255,0.15);
+            backdrop-filter:blur(10px);
+            border-radius:15px;
+            padding:10px;
+            color:white;
+            box-shadow:0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .card h3{
+            font-size:22px;
+            margin-bottom:10px;
+        }
+
+        .card p{
+            font-size:28px;
+            font-weight:bold;
+        }
+        /* Table */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.70);
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #0f172a;
+            color: white;
+        }
+
+        /* Buttons */
+        button {
+            padding: 8px 12px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .page-content{
+    padding-top:70px;
+        }
+
+      
+
+        .add-btn { background: #16a34a; }
+        .delete-btn { background: red; 
+                        color:white;
+                        border:none;
+                        padding:6px 10px;
+                        border-radius:5px;
+                        cursor:pointer;}
+
+    </style>
+</head>
+
+<body>
+{% include 'navbar.html' %}
+
+    <div class="container">
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+
+        <h2>Library</h2>
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+
+        {% if session.get('role') == 'admin' %}
+
+            <a href="/available_books">
+                Available Books
+            </a>
+
+            <a href="/issued_books">
+                Issued Books
+            </a>
+
+            <a href="{{ url_for('add_book') }}">
+                Add Book
+            </a>
+
+            <a href="/viewers">
+                Viewers
+            </a>
+
+        {% endif %}
+
+
+
+        {% if session.get('role') == 'user' %}
+
+            <a href="/available_books">
+                Available Books
+            </a>
+
+        {% endif %}
+
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <!-- Top bar -->
+        <div class="topbar" >
+            <h1>Dashboard</h1>
+            
+        </div>
+    
+        <!-- Cards -->
+        <!-- STATS CARDS -->
+        <div class="stats-container">
+
+    <!-- ROW 1 -->
+            <div class="stats-row">
+
+                <div class="card">
+                    <h3>Total Books</h3>
+                    <p>{{ total_books }}</p>
+                </div>
+
+                
+
+         </div>
+
+    <!-- ROW 2 -->
+            <div class="stats-row">
+
+                <div class="card">
+                    <h3>Technical Books</h3>
+                    <p>{{ technical_books }}</p>
+                </div>
+
+                <div class="card">
+                    <h3>Administrative Books</h3>
+                    <p>{{ administrative_books }}</p>
+                </div>
+
+            </div>
+            {% if session.get('role') == 'admin' %}
+            <!-- ROW 2 -->
+            <div class="stats-row">
+                
+
+                <div class="card">
+                    <h3>Issued Books</h3>
+                    <p>{{ issued_count }}</p>
+                </div>
+                <div class="card">
+                    <h3>Viewers Books</h3>
+                    <p>{{ viewers_count }}</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <!-- Add Book -->
+        <br>
+        {% if session.get('role') == 'admin' %}
+        <button class="add-btn" onclick="window.location.href='{{ url_for('add_book') }}'">
+            + Add New Book
+        </button>
+        {% endif %}
+    </div>
+</div>
+</div>
+
+<!-- Search Script -->
+<script>
+function searchBooks() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let rows = document.querySelectorAll("#bookTable tbody tr");
+
+    rows.forEach(row => {
+        let text = row.innerText.toLowerCase();
+        row.style.display = text.includes(input) ? "" : "none";
+    });
+}
+</script>
+
+</body>
+</html>

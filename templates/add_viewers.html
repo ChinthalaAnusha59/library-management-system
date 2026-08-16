@@ -1,0 +1,119 @@
+
+   <!DOCTYPE html>
+<html>
+<head>
+    <title>Add Viewer</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+
+            /* 📚 Library Background */
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                        url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da');
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+
+            color: rgb(8, 8, 8);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color:pink;
+        }
+        .page-content{
+    padding-top:70px;
+        }
+
+        .form-container {
+            width: 400px;
+            margin: auto;
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            border-radius: 12px;
+            color: rgb(243, 239, 239);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: #1972e7;
+            color: rgb(2, 2, 2);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #1392db;
+        }
+
+        .back-btn {
+            background: #fcfdff;
+            margin-top: 10px;
+        }
+
+        .back-btn:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+
+<body>
+{% include 'navbar.html' %}
+<h1>👤 Add Viewer</h1>
+
+<div class="form-container">
+
+    <form method="POST" action="{{ url_for('add_viewers') }}">
+
+        <input type="text" name="candidate_name" placeholder="Candidate Name" required>
+
+        <input type="text" name="candidate_id" placeholder="Candidate ID" required>
+
+        <input type="text" name="department" placeholder="Department" required>
+
+        <input type="text" name="phone" placeholder="Phone Number" required>
+        <input type="text"  name="username" placeholder="Username" required>
+
+        <input type="text" name="borrowed_book" placeholder="Borrowed Book" required>
+
+        <button type="submit">Add Viewer</button>
+
+    </form>
+
+    <a href="{{ url_for('viewers') }}">
+        <button class="back-btn">⬅ Back</button>
+    </a>
+
+</div>
+
+</body>
+</html>

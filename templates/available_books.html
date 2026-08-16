@@ -1,0 +1,212 @@
+<!-- available_books.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Available Books</title>
+
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: url('https://i.pinimg.com/736x/66/d1/a3/66d1a32f92fbcc6d5221a64757917344.jpg') no-repeat center center/cover;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* 🔥 BIG HEADING */
+        .page-title {
+            text-align: center;
+            font-size: 60px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 30px;
+
+            letter-spacing: 3px;
+
+            /* Glow */
+            text-shadow: 2px 2px 10px black, 0 0 20px #facc15;
+
+            /* Animation */
+            animation: fadeSlide 1s ease-in-out, glow 2s infinite alternate;
+        }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 2px 2px 10px black, 0 0 10px #facc15;
+            }
+            to {
+                text-shadow: 2px 2px 20px black, 0 0 30px #facc15;
+            }
+        }
+
+        /* 🔥 TABLE STYLING */
+        table {
+            width: 95%;
+            margin: auto;
+            border-collapse: collapse;
+
+            background: rgba(255, 255, 255, 0.85); /* transparent */
+            border-radius: 10px;
+            overflow: hidden;
+
+            box-shadow: 0px 5px 20px rgba(0,0,0,0.4);
+        }
+
+        th {
+            background: #aa4b14;
+            color: white;
+            padding: 14px;
+            font-size: 16px;
+        }
+
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        /* Alternate row colors */
+        tr:nth-child(even) {
+            background: rgba(255,255,255,0.7);
+        }
+
+        tr:hover {
+            background: #fcd9c4;
+            transition: 0.3s;
+        }
+        table {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+            transition: 0.3s;
+        }
+
+        h2 {
+           font-family: 'Poppins', sans-serif;
+           letter-spacing: 1px;
+        }
+        
+        .page-content{
+    padding-top:70px;
+        }
+
+    </style>
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+
+    <!-- ✅ Correct heading -->
+    <h1 class="page-title">Available Books</h1>
+    {% if session.get('role') == 'admin' %}
+    <div style="text-align:center; margin-bottom:20px;">
+    <a href="{{ url_for('add_book') }}"
+       style="
+       background:#28a745;
+       color:white;
+       padding:12px 25px;
+       text-decoration:none;
+       border-radius:8px;
+       font-size:18px;
+       font-weight:bold;
+       box-shadow:0 4px 10px rgba(0,0,0,0.3);
+       ">
+       + Add Book
+    </a>
+</div>
+{% endif %}
+
+    <h2 style="text-align:center; margin-top:30px; color:#0a0a0a;">
+    Technical Books
+    </h2>
+    <table>
+        <tr>
+            <th>S.No</th>
+            <th>Book Title</th>
+            <th>Author</th>
+            <th>Publisher</th>
+            <th>Edition</th>
+            <th>Acc No</th>
+            <th>ISBN</th>
+            <th>Remark</th>
+            {% if session.get('role') == 'admin' %}
+            <th>Action</th>
+            {% endif %}
+        </tr>
+
+        {% for book in technical_books %}
+        <tr>
+            <td>{{ book.sno }}</td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.publisher }}</td>
+            <td>{{ book.edition }}</td>
+            <td>{{ book.acc_no }}</td>
+            <td>{{ book.isbn }}</td>
+            <td>{{ book.remark }}</td>
+            <td>
+            {% if session.get('role') == 'admin' %}
+            <a href="{{ url_for('delete_admin_book', sno=book.sno) }}"
+            onclick="return confirm('Delete this administrative book?')">
+                <button class="delete-btn">Delete</button>
+            </a>
+            {% endif %}
+        </td>
+        </tr>
+        {% endfor %}
+        
+
+    </table>
+
+    <h2 style="text-align:center; margin-top:40px; color:#0a0a0a;">
+    Administrative Information Center SAMEER CE3 Vizag
+    </h2>
+
+    <table border="1" style="width:90%; margin:auto; border-collapse: collapse;">
+        <tr style="background-color:#34495e; color:white;">
+            <th>S.No</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Publisher</th>
+            <th>Acc No</th>
+            {% if session.get('role') == 'admin' %}
+            <th>Action</th>
+            {% endif %}
+        </tr>
+
+        {% for book in administrative_books %}
+        <tr>
+            <td>{{ book.sno }}</td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.publisher }}</td>
+            <td>{{ book.acc_no }}</td>
+
+            {% if session.get('role') == 'admin' %}
+            <td>
+                <a href="{{ url_for('delete_admin_book', sno=book.sno) }}"
+                onclick="return confirm('Delete this administrative book?')">
+                    <button class="delete-btn">Delete</button>
+                </a>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+   
+
+</body>
+</html>

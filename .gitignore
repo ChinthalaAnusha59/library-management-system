@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+
+build/
+dist/
+
+instance/
+
+.env
+
+.vscode/
+.idea/
+
+*.db
+*.sqlite
+*.sqlite3

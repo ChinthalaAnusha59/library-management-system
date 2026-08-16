@@ -1,0 +1,194 @@
+<!-- add_book.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Book</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: url('https://images.rawpixel.com/image_png_800/cHJpdmF0ZS90ZW1wbGF0ZXMvZmlsZXMvY3JlYXRlX3Rvb2wvMjAyMy0wNy8wMWd6bjNzcGQ4czhhanlyNjN5YnZieDJ4dC1sazhpeXpuci5wbmc.png') no-repeat center center/cover;
+        flex-direction: column;
+        align-items: center;
+    }
+    body::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        top: 0;
+        left: 0;
+        z-index: -1;
+}
+    .heading {
+        margin-top: 30px;
+        font-size: 32px;
+        color: #ffffff;
+        font-weight: bold;
+        text-align: center;
+
+        background: rgba(37, 99, 235, 0.7);
+        padding: 10px 20px;
+        border-radius: 8px;
+}
+    
+
+   
+
+    .container {
+        margin-top: auto;
+        margin-bottom: auto;
+
+        width: 200px;
+        padding: 20px;
+
+        background: rgba(255, 255, 255, 0.15); /* transparent */
+        backdrop-filter: blur(10px); /* glass effect */
+        
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        color: white;
+    }
+
+    h1 {
+        text-align: center ;
+        margin-bottom: 50px;
+        color: #e71f05;
+    }
+    .page-content{
+    padding-top:60px;
+    }
+
+    input {
+        width: 50%;
+        padding: 10px;
+        margin-bottom: 12px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        outline: none;
+    }
+
+    input:focus {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 12px;
+        border: none;
+        border-radius: 6px;
+        outline: none;
+    }
+    .page-content{
+    padding-top:70px;
+    }
+
+    button {
+        width: 50%;
+        padding: 10px;
+        background: #070707;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #1d4ed8;
+    }
+
+    .back {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+        text-decoration: none;
+        color: #0d0d0e;
+    }  
+    .books-bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.books-bg span {
+    position: absolute;
+    display: block;
+    font-size: 50px;
+    animation: floatBooks 10s linear infinite;
+    opacity: 0.2;
+}
+
+.books-bg span:nth-child(1) {
+    left: 30%;
+    animation-duration: 12s;
+}
+.books-bg span:nth-child(2) {
+    left: 40%;
+    animation-duration: 10s;
+}
+.books-bg span:nth-child(3) {
+    left: 50%;
+    animation-duration: 14s;
+}
+.books-bg span:nth-child(4) {
+    left: 70%;
+    animation-duration: 9s;
+}
+.books-bg span:nth-child(5) {
+    left: 90%;
+    animation-duration: 11s;
+}
+
+@keyframes floatBooks {
+    0% {
+        top: 100%;
+        transform: rotate(0deg);
+    }
+    100% {
+        top: -50%;
+        transform: rotate(360deg);
+    }
+}
+    
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="page-content">
+    <h2 style="text-align:center;">Add New Book</h2>
+
+    <form action="{{ url_for('add_book') }}" method="POST">
+        <input type="text" name="sno" placeholder="S.No" required>
+        <input type="date" name="date" required>
+        <input type="text" name="title" placeholder="Book Title" required>
+        <input type="text" name="author" placeholder="Author" required>
+        <input type="text" name="publisher" placeholder="Publisher" required>
+        <input type="text" name="edition" placeholder="Edition" required>
+        <input type="text" name="isbn" placeholder="ISBN" required>
+        <input type="text" name="acc_no" placeholder="ACC No" required>
+        <input type="text" name="remark" placeholder="Remark" required>
+
+        <button type="submit">Add Book</button>
+        <a href="{{ url_for('available_books') }}">View Books</a>
+        <select name="category" required>
+            <option value="">Select Category</option>
+            <option value="Technical">Technical</option>
+            <option value="Administrative">Administrative</option>
+        </select>
+    </form>
+    </div>
+    <div class="books-bg">
+        <span>📘</span>
+        <span>📕</span>
+        <span>📗</span>
+        <span>📙</span>
+        <span>📚</span>
+    </div>
+ 
+
+</body>
+</html>

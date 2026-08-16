@@ -1,0 +1,196 @@
+<div class="top-navbar">
+
+    <div class="nav-left">
+
+        <button onclick="goBack()" class="nav-btn">
+            ⬅ Back
+        </button>
+
+        <button onclick="refreshPage()" class="nav-btn refresh-btn">
+            🔄 Refresh
+        </button>
+
+
+    </div>
+
+    <div class="nav-title">
+        📚 Library Management System
+    </div>
+
+</div>
+<div class="top-navbar">
+
+    <div class="nav-left">
+
+        <button onclick="goBack()" class="nav-btn">
+            ⬅ Back
+        </button>
+
+        <button onclick="refreshPage()" class="nav-btn refresh-btn">
+            🔄 Refresh
+        </button>
+
+    </div>
+
+
+    
+
+
+    <div class="nav-title">
+        📚 Library Management System
+    </div>
+
+</div>
+
+
+<style>
+
+.top-navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    background:#0f172a;
+    padding:5px 10px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    box-sizing:border-box;
+    box-shadow:0 4px 12px rgba(0,0,0,0.3);
+    z-index:1000;
+    height:60px;
+}
+
+
+.nav-left{
+    display:flex;
+    gap:12px;
+}
+
+
+.menu{
+    display:flex;
+    gap:15px;
+}
+
+
+.menu a{
+    color:white;
+    text-decoration:none;
+    font-weight:600;
+}
+
+
+.menu a:hover{
+    color:#38bdf8;
+}
+
+
+.nav-title{
+    color:white;
+    font-size:18px;
+    font-weight:bold;
+    margin-left:auto;
+}
+
+
+.nav-btn{
+    background:white;
+    color:#0f172a;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+
+.refresh-btn{
+    background:#2563eb;
+    color:white;
+}
+
+</style>
+
+
+<script>
+
+function goBack(){
+    window.history.back();
+}
+
+
+function refreshPage(){
+    location.reload();
+}
+
+</script>
+<style>
+
+.top-navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    background:#0f172a;
+    padding:5px 10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-sizing:border-box;
+    box-shadow:0 4px 12px rgba(0,0,0,0.3);
+    z-index:1000;
+    height:60px;
+
+}
+
+.nav-left{
+    display:flex;
+    gap:12px;
+}
+
+.nav-title{
+    color:white;
+    font-size:20px;
+    font-weight:bold;
+    letter-spacing:0.5px;
+}
+
+.nav-btn{
+    background:white;
+    color:#0f172a;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.nav-btn:hover{
+    transform:translateY(-2px);
+    background:#e2e8f0;
+}
+
+.refresh-btn{
+    background:#2563eb;
+    color:white;
+}
+
+.refresh-btn:hover{
+    background:#1d4ed8;
+}
+
+</style>
+
+<script>
+
+function goBack() {
+    window.history.back();
+}
+
+function refreshPage() {
+    location.reload();
+}
+
+</script>
