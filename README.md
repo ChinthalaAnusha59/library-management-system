@@ -38,3 +38,7 @@ library-management-system/
 ├── database/
 ├── requirements.txt
 └── README.md
+
+## Author
+Ch. Anusha
+B.Tech – Computer Science and Engineering
